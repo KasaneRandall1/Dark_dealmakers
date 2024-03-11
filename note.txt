@@ -1,0 +1,13 @@
+roguelike horror card game
+player
+cpu
+interface
+events
+player cards
+boss encounter + cards
+encounter
+progresseion
+map
+deck management
+img
+hud
