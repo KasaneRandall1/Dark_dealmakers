@@ -8,10 +8,8 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Dark Dealmakers - Pact of Death")
 clock = pygame.time.Clock()
 
-if os.path.isfile("data/player.pkl"):
-    player = player_management.player.load_stats()
-else:
-    player = player_management.player()
+
+player = player_management.player()
 cpu = cpu_managment.cpu()
 main_menu_gui = gui_collection.main_menu(screen)
 main_menu_rules = gui_collection.rules(screen)
@@ -36,9 +34,11 @@ COMBAT = 30
 DEATH = 40
 
 PLAYER_CARD_COST = 3
+
 pygame.mixer.music.load("music/unsettling2.mp3")
-pygame.mixer.music.play()
+pygame.mixer.music.play(loops=6666)
 pygame.mixer.music.set_volume(0.05)
+
 while running:
     
     for event in pygame.event.get():
@@ -79,10 +79,10 @@ while running:
                 combat_hud.preload_cpu_img(cpu.deck)
 
     if gamestate == ENCOUNTER:
-        encounter_screen.draw_encounter(player.health)
+        encounter_screen.draw_encounter(player.health,player.monster_defeated)
         if event.type == pygame.MOUSEBUTTONDOWN:
             if encounter_screen.advance_but.collidepoint(pygame.mouse.get_pos()):
-                player.save_stats()
+                player.health += 15
                 cpu.reset()
                 cpu.deck_create()
                 combat_hud.preload_cpu_img(cpu.deck)
@@ -213,8 +213,6 @@ while running:
                 player.reset()
                 cpu.reset()
                 gamestate = MAIN_MENU
-
-
 
     pygame.display.flip()
     clock.tick_busy_loop(60)

@@ -94,6 +94,7 @@ class encounter():
         self.event_trigger = False
         self.red = (255,0,0)
         self.black = (0,0,0)
+        self.__img_grab()
         
     def __player_health(self,player_hp):
         hp_value = self.font.render(f"HP: {player_hp}",True,self.red)
@@ -118,30 +119,34 @@ class encounter():
         folder_path = "img/encounter_img/"
         image_files = grab_images_from_folder(folder_path)
         img = random.choice(image_files)
-        bg = pygame.image.load((folder_path+img))
-        self.display.blit(bg,(0,0))
-        self.img_pulled = True
+        self.bg = pygame.image.load((folder_path+img))
 
     def __draw_but(self):
+        self.display.blit(self.bg,(0,0))
         pygame.draw.rect(self.display,self.red,self.succumb_but)
         pygame.draw.rect(self.display,self.red,self.advance_but)
         succumb_txt = self.font.render("SUCCUMB",True,self.black)
         advance_txt = self.font.render("ADVANCE",True,self.black)
         self.display.blit(succumb_txt,(200,715))
         self.display.blit(advance_txt,(600,715))
+    
+    def __draw_lore(self):
+        t1 = "You won against a monster slumbering in the shadow"
+        t2 = "But will you go deeper in the Abyss"
+        t3 = "You gain some Life if you adventure more"
+        t1_render = self.font.render(t1,True,self.red)
+        t2_render = self.font.render(t2,True,self.red)
+        t3_render = self.font.render(t3,True,self.red)
+        self.display.blit(t1_render,(50,50))
+        self.display.blit(t2_render,(50,80))
+        self.display.blit(t3_render,(50,110))
 
-    def __create_event(self):
-        if os.path.isfile("data/event.json"):
-            with open("data/event.json","r") as load_event:
-                event = random.choice(json.load(load_event))
-
-    def draw_encounter(self,player_hp):
-        if self.event_trigger:
-            self.__create_event()
-        if not self.img_pulled:
-            self.__img_grab()
+    def draw_encounter(self,player_hp,monster_defeated):
         self.__draw_but()
         self.__player_health(player_hp)
+        self.__draw_lore()
+        monster_dead = self.font.render(str(monster_defeated),True,self.red)
+        self.display.blit(monster_dead,(1000,20))
 
 class prologue():
     def __init__(self,screen) -> None:

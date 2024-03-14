@@ -1,5 +1,5 @@
 import json,random
-import os,pickle
+import os
 
 class player():
     def __init__(self) -> None:
@@ -12,6 +12,7 @@ class player():
         self.set_cards = False
         self.choose_target = False
         self.switch_turn = False
+        self.monster_defeated = 0
 
     def __draw_start_deck(self):
         if os.path.isfile("data/player_cards.json"):
@@ -38,18 +39,6 @@ class player():
         missing_card = 5 - draw_cards
         for i in range(missing_card):
             self.hand.append(self.deck[i])
-
-    def save_stats(self):
-        if os.path.isfile("data/player.pkl"):
-            with open("highscore.pkl","wb") as file:
-                pickle.dump(self, file)
-        else:
-            with open("data/player.pkl","xb") as file:
-                pickle.dump(self, file)
-    def load_stats():
-        with open("data/player.pkl","rb") as file:
-            instance = pickle.load(file)
-        return instance
 
     def deck_creation(self):
         self.__draw_start_deck()

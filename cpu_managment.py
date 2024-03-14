@@ -2,7 +2,7 @@ import random,os,json
 
 class cpu():
     def __init__(self) -> None:
-        self.health = 5
+        self.health = 30
         self.deck = []
         self.hand = []
         self.discard = []
