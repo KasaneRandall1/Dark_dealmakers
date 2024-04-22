@@ -10,6 +10,9 @@ Created in pygame.
 - Backgroundmusic
 - Combat system based on dice roll
 
+## current ToDo
+ - Events
+
 ## ToDO
 
 - new Art
