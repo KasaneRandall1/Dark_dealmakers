@@ -1,5 +1,5 @@
 import pygame,os,sys
-import player_management,cpu_managment,gui_collection,attack_managment
+import player_management,cpu_managment,gui_collection,attack_managment,music_player
 
 pygame.init()
 
@@ -18,6 +18,7 @@ beginning = gui_collection.prologue(screen)
 combat_hud = gui_collection.combat_gui(screen)
 resolver = attack_managment.resolve_attack(screen)
 death = gui_collection.death_screen(screen)
+music = music_player.Music()
 
 gamestate = 10
 
@@ -35,15 +36,19 @@ DEATH = 40
 
 PLAYER_CARD_COST = 3
 
-pygame.mixer.music.load("music/unsettling2.mp3")
-pygame.mixer.music.play(loops=6666)
-pygame.mixer.music.set_volume(0.05)
-
+music.choose_track()
 while running:
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_KP_PLUS:
+                    music.vol_up()
+                if event.key == pygame.K_KP_MINUS:
+                    music.vol_down()
+        elif event.type == pygame.USEREVENT:
+            music.choose_track()
     if gamestate != COMBAT:
         screen = pygame.display.set_mode((screen_width,screen_height))
     else:
@@ -146,12 +151,14 @@ while running:
                         for i in range(5):
                             if combat_hud.player_card_field[i].collidepoint(pygame.mouse.get_pos()):
                                 combat_hud.target_1 = i
+                                combat_hud.highlite = i
                                 combat_hud.choose_target_1 = False
                                 combat_hud.choose_target_2 = True
                     elif combat_hud.choose_target_2:
                        for i in range(5):
                            if combat_hud.cpu_card_field[i].collidepoint(pygame.mouse.get_pos()):
                                combat_hud.target_2 = i
+                               combat_hud.highlite = None
                                combat_hud.choose_target_2 = False
                     else:
                         combat_hud.choose_target_2 = False
@@ -167,6 +174,7 @@ while running:
                         player.set_cards = True
                         combat_hud.choose_target_1 = True
                         combat_hud.in_attack_phase = 2
+                        combat_hud.highlite = None
 
             if player.switch_turn:
                 combat_hud.line_pos.clear()

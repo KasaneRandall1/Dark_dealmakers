@@ -190,6 +190,7 @@ class combat_gui():
         self.line_pos = []
         self.in_attack_phase = 0
         self.attacks = []
+        self.highlite = None
 
         self.card_1 = pygame.Rect(25,550,150,200)
         self.card_2 = pygame.Rect(225,550,150,200)
@@ -296,10 +297,15 @@ class combat_gui():
         self.c_hp = cpu_hp
         self.p_h_cards = player_hand_cards
         self.display.fill((0,0,0))
+        self.__draw_highlight()
         self.__draw_cards()
         self.__draw_hud()
         self.__draw_lines()
 
+    def __draw_highlight(self):
+        cards = [self.card_1.topleft,self.card_2.topleft,self.card_3.topleft,self.card_4.topleft,self.card_5.topleft]
+        if self.highlite != None:
+            pygame.draw.rect(self.display,(255,0,0),(cards[self.highlite][0]-4,cards[self.highlite][1]-4,158,208))
     def draw_attack_lines(self):
         p1_cor_cen = [self.card_1.center,self.card_2.center,self.card_3.center,self.card_4.center,self.card_5.center]
         p2_cor_cen = [self.c_field_1.center,self.c_field_2.center,self.c_field_3.center,self.c_field_4.center,self.c_field_5.center]
