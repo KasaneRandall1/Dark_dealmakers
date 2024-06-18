@@ -1,3 +1,5 @@
+# Currently having issues with a bug that causes flickiring image
+
 # Dark_dealmakers
  
 Dark Dealmakers is simple card game with creepy elements.
